@@ -1,4 +1,4 @@
-Seizure Prediction: 
+# Seizure Prediction 
 https://www.kaggle.com/c/melbourne-university-seizure-prediction
 
 This project is with regards to the above hosted Kaggle competition. 
