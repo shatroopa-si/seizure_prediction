@@ -1,0 +1,20 @@
+{
+    "collab_server" : "",
+    "contents" : "Student_Master <- read.csv(\"iiitb_student_data_01.csv\")\nnames(Student_Master)\n# Choose only the columns of interest\nsmast <- Student_Master[,c(\"UG_Percent\",\"GATE.Score\",\"Mtech_CGPA\")]\n\n# In some cases, we have UG_CGPA instead of UG_Percent. Make the adjustment\nlength(which(smast$UG_Percent==0))\n\n# Remove rows having zero values\nsmast <- subset(smast,GATE.Score > 0 & UG_Percent > 0 & Mtech_CGPA>0)\n\n\n# Scale (normalize) the values\nsmast <- as.data.frame(scale(smast[1:3]))\n\n# Check correlations\ncor(smast$GATE.Score,smast$UG_Percent)\ncor(smast$GATE.Score,smast$Mtech_CGPA)\ncor(smast$UG_Percent,smast$Mtech_CGPA)\n\n# Try linear regression with Mtech_CGPA as response variable\nsmast_lm <- lm(Mtech_CGPA~UG_Percent+GATE.Score,smast)  #predict mtech cgpa wrt ug% nd gatescore\nsummary(smast_lm)\n\n# Mind boggling regression equation!!\nplot(smast_lm)\nplot(smast)\n\n# Look at some clusters\nlibrary(cluster)\n\n# Elbow plot or scree plot to determine number of clusters\nwss <- (nrow(smast)-1)*sum(apply(smast,2,var))\nfor (i in 2:15) wss[i] <- sum(kmeans(smast,centers=i)$withinss)\nplot(1:15, wss, type=\"b\", xlab=\"Number of Clusters\",\n     ylab=\"Within groups sum of squares\") \n\n# There is really no \"elbow\" as such in the plot... lets try 3 and 4 clusters\nsclust <- kmeans(smast,centers=3)\nprint(sclust)\n\nsclust <- kmeans(smast,centers=4)\nprint(sclust)\n\n# Silhouette plot\ndmat <- daisy(smast)\nsh <- silhouette(sclust$cluster,dmat)\nplot(sh)\n\n# Clusters don't look that great\n\n# Keep going!\n",
+    "created" : 1481080590109.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2363208227",
+    "id" : "DE0EB328",
+    "lastKnownWriteTime" : 1481081238,
+    "last_content_update" : 1481081238141,
+    "path" : "~/Desktop/cHEMICAL lOCHA/Sem 3/Data analytics/practice/IIITB_DA01.R",
+    "project_path" : null,
+    "properties" : {
+    },
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}
